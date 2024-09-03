@@ -110,13 +110,6 @@ namespace ScdMergeWizard.Pages
             GlobalVariables.IsProjectModified = true;
         }
 
-        private void buttonEditConnectionString_Click(object sender, EventArgs e)
-        {
-            var res = DbHelper.GetBuiltConnectionString(rtbTgtConnStr.Text);
-            if (res != null)
-                rtbTgtConnStr.Text = res;
-        }
-
         private void buttonFilter_Click(object sender, EventArgs e)
         {
             var ff = new DatabaseObjectFilterForm();
@@ -151,7 +144,7 @@ namespace ScdMergeWizard.Pages
             btnEditCnn_ButtonClick(sender, e);
         }
 
-        private void buttonEditNewConnectionString_Click(object sender, EventArgs e)
+        private void buttonEditConnectionString_Click(object sender, EventArgs e)
         {
             ConnectDbForm ff = new ConnectDbForm(rtbTgtConnStr.Text);
             ff.ShowDialog();
@@ -164,14 +157,7 @@ namespace ScdMergeWizard.Pages
 
         private void btnEditCnn_ButtonClick(object sender, EventArgs e)
         {
-            if (tsmiEditOld.Checked)
-            {
-                buttonEditConnectionString_Click(sender, e);
-            }
-            else
-            {
-                buttonEditNewConnectionString_Click(sender, e);
-            }
+            buttonEditConnectionString_Click(sender, e);
         }
 
         private void lilCopyFromSource_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
