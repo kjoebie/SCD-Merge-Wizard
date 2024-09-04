@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ScdMergeWizard")]
-[assembly: AssemblyDescription("Slowly Changing Dimension (SCD) Merge Wizard is used to generate and maintain T-SQL (MERGE) statement for SCD operations. \nBy Miljan Radovic (knyazs) http://si.linkedin.com/in/miljanradovic \nand Kamil Nowinski http://SQLPlayer.net\n\nFor further information, please visit:\nhttps://github.com/SQLPlayer/SCD-Merge-Wizard")]
+[assembly: AssemblyDescription("Slowly Changing Dimension (SCD) Merge Wizard is used to generate and maintain T-SQL (MERGE) statement for SCD operations. \nBy Miljan Radovic (knyazs) http://si.linkedin.com/in/miljanradovic \nand Kamil Nowinski http://AzurePlayer.net\n\nFor further information, please visit:\nhttps://github.com/Azure-Player/SCD-Merge-Wizard")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ScdMergeWizard")]
