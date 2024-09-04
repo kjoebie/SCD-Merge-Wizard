@@ -33,8 +33,8 @@ namespace ScdMergeWizard
 
             // Add come comments at the beginning
             lines.Add(string.Format("Slowly Changing Dimension script by SCD Merge Wizard"));
-            lines.Add(string.Format("Author: Miljan Radovic"));
-            lines.Add(string.Format("Official web site: https://github.com/SQLPlayer/SCD-Merge-Wizard/"));
+            lines.Add(string.Format("Author: Miljan Radovic, Kamil Nowinski"));
+            lines.Add(string.Format("Official web site: https://github.com/Azure-Player/SCD-Merge-Wizard/"));
             lines.Add(string.Format("Version: {0}", Assembly.GetEntryAssembly().GetName().Version));
             lines.Add(string.Format("Publish date: {0}", GlobalVariables.LinkerTimestamp));
             lines.Add(string.Format("Script creation date: {0}", DateTime.Now));

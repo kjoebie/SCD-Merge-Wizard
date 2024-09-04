@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace ScdMergeWizard.Formz
 {
@@ -27,43 +27,52 @@ namespace ScdMergeWizard.Formz
 
         private void RestoreSettings(string connectionString)
         {
-            List<string> parts = new List<string>();
-            parts.AddRange(connectionString.Split(';'));
-            foreach (string p in parts.Where(n => n.StartsWith("Data Source=")))
-                txtServerName.Text = p.Split('=')[1];
-            foreach (string p in parts.Where(n => n.StartsWith("Initial Catalog=")))
-                cmbDatabase.Text = p.Split('=')[1];
-            if (parts.FindIndex(n => n.Contains("Integrated Security=False")) < 0)
-                cmbAuthentication.SelectedIndex = 0;
-            else
-            {
-                cmbAuthentication.SelectedIndex = 1;
-                foreach (string p in parts.Where(n => n.StartsWith("User ID=")))
-                    txtLoginSQL.Text = p.Split('=')[1];
-                foreach (string p in parts.Where(n => n.StartsWith("Password=")))
-                    txtPassword.Text = p.Split('=')[1];
-            }
+            SqlConnectionStringBuilder b = new SqlConnectionStringBuilder(connectionString);
+            int AuthIndex = 0;
+            if (b.Authentication == SqlAuthenticationMethod.ActiveDirectoryInteractive)
+                AuthIndex = 2;
+            if (b.Authentication == SqlAuthenticationMethod.SqlPassword)
+                AuthIndex = 1;
+            cmbAuthentication.SelectedIndex = AuthIndex;
+            txtLoginSQL.Text = b.UserID;
+            txtPassword.Text = b.Password;
+            txtServerName.Text = b.DataSource;
+            cmbDatabase.Text = b.InitialCatalog;
         }
 
         private void cmbAuthentication_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool isSqlMode = cmbAuthentication.SelectedIndex == 1;
+            bool isEntraMFAmode = cmbAuthentication.SelectedIndex == 2;
             lblLogin.Enabled = isSqlMode;
             lblPassword.Enabled = isSqlMode;
             if (!isSqlMode) chkRememberPwd.Checked = false;
             chkRememberPwd.Enabled = isSqlMode;
             txtLoginSQL.Enabled = true;
-            txtLoginSQL.Visible = isSqlMode;
-            txtLoginWindows.Visible = !isSqlMode;
+            txtLoginSQL.Visible = isSqlMode || isEntraMFAmode;
+            txtLoginWindows.Visible = !isSqlMode && !isEntraMFAmode;
             txtPassword.Enabled = isSqlMode;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
             SqlConnectionStringBuilder cb = new SqlConnectionStringBuilder();
-            cb.UserID = txtLoginSQL.Text;
-            cb.IntegratedSecurity = cmbAuthentication.SelectedIndex == 0;
-            cb.Password = txtPassword.Text;
+
+            switch (cmbAuthentication.SelectedIndex)
+            {
+                case 0:
+                    cb.IntegratedSecurity = true;
+                    break;
+                case 1:
+                    cb.IntegratedSecurity = false;
+                    cb.UserID = txtLoginSQL.Text;
+                    cb.Password = txtPassword.Text;
+                    break;
+                case 2:
+                    cb.Authentication = SqlAuthenticationMethod.ActiveDirectoryInteractive;
+                    cb.UserID = txtLoginSQL.Text;
+                    break;
+            }
             cb.DataSource = txtServerName.Text;
             cb.InitialCatalog = cmbDatabase.Text;
             try

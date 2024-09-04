@@ -31,7 +31,7 @@ namespace MergeWizard.Components
 
 
         public delegate void RichTextBoxTextChangedHandler(object sender, EventArgs e);
-        public event RichTextBoxTextChangedHandler TextChanged;
+        public event RichTextBoxTextChangedHandler RichTextChanged;
 
 
         public MyRichTextBox()
@@ -45,9 +45,9 @@ namespace MergeWizard.Components
 
         void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            if (TextChanged != null)
+            if (RichTextChanged != null)
             {
-                TextChanged(sender, e);
+                RichTextChanged(sender, e);
             }
             //TextChanged2 += new RichTextBoxTextChangedHandler(MyRichTextBox_TextChanged2);
         }

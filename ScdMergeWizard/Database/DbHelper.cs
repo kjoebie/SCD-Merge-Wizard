@@ -87,42 +87,6 @@ namespace ScdMergeWizard.Database
             return columns.ToArray();
         }
 
-        public static string GetBuiltConnectionString(string inputConnectionString)
-        {
-            MSDASC.DataLinks oDL = null;
-            string res = string.Empty;
-            
-            try
-            {
-                oDL = new MSDASC.DataLinksClass();
-                ADODB.Connection conn = new ADODB.ConnectionClass();
-
-                conn.ConnectionString = inputConnectionString;
-                object oConn = (object)conn;
-                if (oDL.PromptEdit(ref oConn))
-                    res = conn.ConnectionString;
-            }
-            catch
-            {
-                try
-                {
-                    ADODB._Connection oConn = (ADODB._Connection)oDL.PromptNew();
-                    if (oConn != null)
-                        res = oConn.ConnectionString.ToString();
-                }
-                catch (Exception ex)
-                {
-                    MyExceptionHandler.NewEx(ex);
-                }
-            }
-
-            return string.IsNullOrEmpty(res) ? null : res;
-        }
-
-        //public static MyBaseDbConnection CreateConnection(string connectionString)
-        //{
-        //    return new Database.MyAdoDbConnection(connectionString);
-        //}
         public static MyBaseDbConnection CreateConnection(string connectionString)
         {
             if (!connectionString.ToLower().StartsWith("provider="))
